@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<database>
-    <element attributes="email_client=true,live_feed=true,display_image=assigned_to" audit="true" extends="sm_task" label="HR Task" max_length="40" name="hr_task" sizeclass="22" type="collection">
-        <element label="Document signer" max_length="32" name="x_snc_ds_int_document_signer" reference="sys_user" type="reference"/>
-    </element>
-</database>

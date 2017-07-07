@@ -32,39 +32,33 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {	
-
-	/*
-	var templateName = '';
-
-	if (this.templateId) {
-		var t = new GlideRecord('x_snc_ds_int_templates');
-		t.get('template_id', this.templateId);	
-		templateName = t.name;
-	}
-
-	*/
-	var gr = new GlideRecord('task');
-	gr.get(current.record.sys_id);
+	var table = current.record.getRefRecord().getTableName();
 	
-	var comments = ''
+	var gr = new GlideRecord(table);
+	gr.get(current.record.sys_id);
+
+	var comments = '';
+	var tempURL = '';
 	comments = 'A document has been sent for signature.';
+	tempURL = 'https://appdemo.docusign.com/documents/details/' + current.envelope_id;
 
 	if (current.template)
 		comments += " " + current.template.getDisplayValue();
 
 	comments += "\n\n";
 
-	var url = '[code]<u><a target="_blank" href="https://appdemo.docusign.com/documents/details/' + current.envelope_id.getDisplayValue() + '">here</a></u>[/code]';
-	
-	gr.url = 'https://appdemo.docusign.com/documents/details/' + current.envelope_id.getDisplayValue();
+	var commentsUrl = '[code]<u><a target="_blank" href="https://appdemo.docusign.com/documents/details/' + current.envelope_id + '">here</a></u>[/code]';
 
-	comments += "Click " + url + " to access the document in Docusign";
+	if (gr.getTableName() == 'sn_hr_core_task')
+		gr.url.setDisplayValue(tempURL);
+
+	comments += "Click " + commentsUrl + " to access the document in Docusign";
 
 	gr.comments = comments;
 	gr.update();
-	
-	
-	
+
+
+
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>admin</sys_created_by>
@@ -73,7 +67,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>68057f614f773e00bf0ecfce0310c71a</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Update task Comments when Sent</sys_name>
         <sys_overrides/>
         <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
@@ -82,7 +76,7 @@
         <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_script_68057f614f773e00bf0ecfce0310c71a</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-07-07 19:10:47</sys_updated_on>
+        <sys_updated_on>2017-07-07 20:55:15</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>
