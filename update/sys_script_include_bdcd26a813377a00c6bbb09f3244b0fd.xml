@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_snc_ds_int.DocuSign</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>DocuSign</name>
+        <script><![CDATA[var DocuSign = Class.create();
+DocuSign.prototype = {
+	initialize: function(gr, accountId) {
+		if (!accountId) 
+			this.auth = this.authenticateLegacyHeader(this.authenticationHeader);
+		
+		this.originatingRecord = gr;
+		
+		this.authHeader = JSON.stringify(this.authenticationHeader);
+	},
+
+	authenticationHeader : {
+		"Username" : gs.getProperty('x_snc_ds_int.api.username') + '',
+		"Password" : gs.getProperty('x_snc_ds_int.api.password') + '',
+		"IntegratorKey" : gs.getProperty('x_snc_ds_int.api.integrator.key') + ''
+	},
+
+	authHeader : JSON.stringify(this.authenticationHeader),
+
+	authenticateLegacyHeader : function(body) {		
+		body = JSON.stringify(body);
+
+		var r = new sn_ws.RESTMessageV2('x_snc_ds_int.DocuSign Authentication', 'Login');
+		r.setRequestHeader("X-DocuSign-Authentication", body);
+		var response = r.execute();
+		var responseBody = response.getBody();
+		var httpStatus = response.getStatusCode();
+
+		if (httpStatus != 200) {
+			return {
+				httpStatus : httpStatus,
+				loginAccounts : []
+			};
+		} else {
+			var resp = JSON.parse(responseBody);
+			resp.httpStatus = httpStatus;
+			return resp;
+		}
+	},
+
+	call : function(webservice, method, body) {
+		body = JSON.stringify(body);
+
+		var r = new sn_ws.RESTMessageV2('x_snc_ds_int.' + webservice, method);
+		r.setStringParameter("accountId", this.auth.loginAccounts[0].accountId);
+		r.setRequestHeader("X-DocuSign-Authentication", this.authHeader);
+		r.setRequestBody(body);
+		
+		var response = r.execute();
+		var responseBody = response.getBody();
+		var httpStatus = response.getStatusCode();
+		responseBody = JSON.parse(responseBody);
+		
+		return responseBody;
+	},
+
+	type: 'DocuSign'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-03 18:40:29</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>bdcd26a813377a00c6bbb09f3244b0fd</sys_id>
+        <sys_mod_count>61</sys_mod_count>
+        <sys_name>DocuSign</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_script_include_bdcd26a813377a00c6bbb09f3244b0fd</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-06 23:41:59</sys_updated_on>
+    </sys_script_include>
+</record_update>

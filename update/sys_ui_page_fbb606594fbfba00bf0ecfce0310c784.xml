@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[var formData = {};
+formData.otherUserDisplayValues = [];
+formData.otherUserSysIds = [];
+
+function addUser() {
+	var otherUserValue = gel('send_to_other').value;
+	
+	if (otherUserValue == '' || formData.otherUserSysIds.indexOf(otherUserValue) >= 0)
+		return;
+		
+	var $userRefDisplay = $j('#display_hidden\\.send_to_other');
+	var $userRefDisplayVisible = $j('#sys_display\\.send_to_other');
+	var $userRef = $j('#send_to_other');
+
+	var e = gel('send_to_other');
+	formData.otherUserSysIds.push(gel('send_to_other').value);
+	formData.otherUserDisplayValues.push(g_form.getDisplayBox('send_to_other').value);
+
+	$userRefDisplay.val('');
+	$userRefDisplayVisible.val('');
+	$userRef.val('');
+	
+	gel('other_user_list').innerHTML=formData.otherUserDisplayValues;
+}
+
+function sendDocusignEnvelope(task) {
+	formData.template = gel('docusign_template').value;
+	formData.sendToSigner = gel('send_to_signer').value;
+	formData.sendToOpenedFor = gel('send_to_opened_for').value;
+	formData.subject = gel('emailSubject').value;
+	formData.task = task;
+	formData.table = g_form.getTableName();
+	
+	var ga = new GlideAjax('DocuSignAJAX');
+	ga.addParam('sysparm_name','sendFromTask');
+	ga.addParam('sysparm_formData', JSON.stringify(formData));
+	ga.getXML(sendFromTaskParse);
+
+	function sendFromTaskParse(response) {
+		var answer = response.responseXML.documentElement.getAttribute("answer");
+		console.log(answer)
+	}
+	
+	console.log(formData);
+}
+
+function clearUsers() {
+	formData.otherUserDisplayValues = [];
+	formData.otherUserSysIds = [];
+}
+
+function cancelSend() {
+	 GlideDialogWindow.get().destroy();
+}]]></client_script>
+        <description>${sysparm_task_id}</description>
+        <direct>false</direct>
+        <endpoint>x_snc_ds_int_send_for_docusign_signature.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	<style>
+		h4 {
+		margin: 0px;
+		}
+
+		.fixed-button-width {
+		width: 64px;
+		}
+
+	</style>
+
+	<g:ui_form>
+		<!-- STEP 1 -->
+		<div class="row header-row">
+			<div class="col-md-10">
+				<h4 class="header-row-step">Step 1 - What do you want to send? </h4>
+			</div>
+			<div class="col-md-2">
+			</div>
+		</div>
+		<br />
+
+		<div class="row">
+			<div class="col-md-4">
+				DocuSign template:
+			</div>
+			<div class="col-md-7">
+				<g:ui_reference name="docusign_template" id="docusign_template" table="x_snc_ds_int_templates" query="active=true" completer="AJAXTableCompleter" columns="name"/>
+			</div>
+		</div>
+		<p />
+		<h5>OR</h5>
+		<p />
+		<div class="row">
+			<div class="col-md-4">
+				Attachment from this task:
+			</div>
+			<div class="col-md-7">
+				<g:ui_checkbox name="use_attachment" value="${sysparm_timecard_active}"/>
+			</div>
+		</div>
+
+		<hr />
+
+		<!-- STEP 2 -->
+		<div class="row header-row">
+			<div class="col-md-10">
+				<h4>Step 2 - Set the recipients. </h4>
+			</div>
+			<div class="col-md-2">
+			</div>
+		</div>
+		<br />
+
+		<div class="row">
+			<div class="col-md-4">
+				"Signer" from this HR Task:
+			</div>
+			<div class="col-md-2">
+				<g:ui_checkbox id="send_to_signer" name="send_to_signer" value="${sysparm_send_to_signer}"/>
+			</div>
+			<div class="col-md-4">
+				"Opened for" from HR Case:
+			</div>
+			<div class="col-md-2">
+				<g:ui_checkbox id="send_to_opened_for" name="send_to_opened_for" value="${sysparm_send_to_opened_for}"/>
+			</div>
+		</div>	
+		<p />
+		<div class="row">
+			<div class="col-md-2">
+				Other:
+			</div>
+			<div class="col-md-6">
+				<g:ui_reference name="send_to_other" id="send_to_other" table="sys_user" query="active=true" completer="AJAXTableCompleter" columns="name"/>
+			</div>
+			<div class="col-md-4">
+				<span><button class="btn-sm fixed-button-width" onclick="addUser()" type="button">Add</button></span>$[SP]
+				<span><button class="btn-sm fixed-button-width" onclick="clearUsers()">Clear all</button></span>
+			</div>
+		</div>
+		Other users: $[SP]<span id="other_user_list"></span>
+
+		<hr />
+
+		<!-- STEP 3 -->
+		<div class="row header-row">
+			<div class="col-md-10">
+				<h4>Step 3 - Finishing touches.</h4>
+			</div>
+			<div class="col-md-2">
+			</div>
+		</div>
+		<br />
+
+		<div class="row">
+			<div class="col-md-4">
+				Email subject:
+			</div>
+			<div class="col-md-7">
+				<input type="text" class="form-control" id="emailSubject" name="emailSubject" placeholder="A document is waiting for your signature.."> </input>
+			</div>
+		</div>	
+		<hr />
+		<br />
+
+		<div style="text-align:right" class="pull-right">
+			<span><button class="fixed-button-width" onclick="sendDocusignEnvelope('${sysparm_task_id}')" type="button">Send</button></span>
+		</div>
+
+
+	</g:ui_form>
+</j:jelly>]]></html>
+        <name>send_for_docusign_signature</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-05 23:00:57</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>fbb606594fbfba00bf0ecfce0310c784</sys_id>
+        <sys_mod_count>118</sys_mod_count>
+        <sys_name>send_for_docusign_signature</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_ui_page_fbb606594fbfba00bf0ecfce0310c784</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-06 21:15:30</sys_updated_on>
+    </sys_ui_page>
+</record_update>

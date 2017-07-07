@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_snc_ds_int.DocuSignEnvelope</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>DocuSignEnvelope</name>
+        <script><![CDATA[var DocuSignEnvelope = Class.create();
+DocuSignEnvelope.prototype = Object.extendsObject(x_snc_ds_int.DocuSign, {
+
+	initialize: function(task, rule, accountId) {
+		/* Override the DocuSign() initialize */
+		this.task = false;
+		this.rule = false;
+		
+		if (!accountId) 
+			this.auth = this.authenticateLegacyHeader(this.authenticationHeader);
+
+		this.originatingRecord = task;
+		this.authHeader = JSON.stringify(this.authenticationHeader);
+
+		if (task && rule) {
+			this.task = task;
+			this.rule = rule;
+		} else if (task)
+			this.task = task;
+	},
+	
+	
+	create : function(subject, recipients, template, attachment) {		
+		if (!this.templateId && template)
+			this.setTemplate(template, this.rule);
+		
+		if (!this.subject)
+			this.setSubject(subject, this.task, this.rule);
+		
+		if (!this.recipients && !this.templateRoles)
+			this.setDefaultRecipients(recipients, template, this.task, this.rule);		
+		
+		var envelope = {};
+		envelope.status = 'sent';
+		envelope.emailSubject = this.subject;
+		
+		//var dsr = new x_snc_ds_int.DocuSignRecipient();
+
+		if (template || (this.rule.use_template && this.rule.template) || this.templateId) {
+			envelope.templateId = this.templateId;			
+			envelope.templateRoles = this.templateRoles;
+		} else {
+			//envelope.recipients = dsr.setRecipientsFromObject(recipients, template).recipients;
+		}
+
+		var r = this.call('DocuSign Envelopes', 'Create', envelope);
+		new x_snc_ds_int.DocuSignUtils().log(this.task, r, this.templateGR);
+	},
+
+	getTemplateByID : function(id /* Sys id of a template record */) {
+		var t = new x_snc_ds_int.DocuSignUtils().getGR('x_snc_ds_int_templates', id);
+		this.templateGR = t;
+		return t.template_id + '' || false;
+	},
+	
+	setTemplate : function(template, rule) {
+		this.templateId = false;
+		
+		if (template)
+			this.templateId = this.getTemplateByID(template);
+		
+		if (rule && rule.use_template)
+			this.templateId = rule.template.template_id + '';
+		
+		return this.templateId;
+	},
+	
+	setSubject : function(subject, task, rule) {
+		this.subject = subject;
+		
+		if (!subject || subject == '')
+			this.subject = 'Signature requested : ';
+		
+		if (task && rule) {
+			if (rule.use_short_description_as_subject)
+				this.subject = task.short_description + '';
+			else if (rule.subject)
+				this.subject = rule.subject + '';
+		}	
+		
+		return this.subject;
+	},
+	
+	setDefaultRecipients : function(recipients, template, task, rule) {
+		var dsr = new x_snc_ds_int.DocuSignRecipient();
+		
+		if (template && recipients) {
+			this.templateRoles = dsr.setTemplateRolesFromObject(recipients);
+			return this.templateRoles;
+		}
+		
+		if (recipients && !template) {
+			this.recipients = dsr.setRecipientsFromObject(recipients);
+			return this.recipients;
+		}
+		
+		if (task && rule) {
+			if (rule.use_template && rule.template) {
+				this.templateRoles = dsr.setTemplateRolesFromRule(task, rule);
+				return this.templateRoles;
+			} else
+				return false;			
+		}
+		
+		
+		if (task && !rule) {
+			if (template) {
+				
+			} else if (recipients) {
+				
+			} else {
+				//whoops!
+			}
+			
+		}
+	},
+	
+	setRecipientsFromArray : function(array) {
+		
+		
+	},
+	
+	setTemplateRolesFromArray : function(role, array) {		
+		
+		if (!this.templateRoles)
+			this.templateRoles = [];
+		
+		for (var i = 0; i < array.length; i++) {
+			var user = new x_snc_ds_int.DocuSignUtils().getGR('sys_user', array[i]);
+			this.templateRoles.push({
+				"email" : user.email + '',
+				"name" : user.name + '',
+				"roleName" : role || 'Employee'
+			});
+		}
+		var x = this.templateRoles;
+
+		return this.templateRoles;
+	},
+
+	type: 'DocuSignTemplate'
+});
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-03 20:05:42</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>fddb0b6813b77a00c6bbb09f3244b0b9</sys_id>
+        <sys_mod_count>103</sys_mod_count>
+        <sys_name>DocuSignEnvelope</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_script_include_fddb0b6813b77a00c6bbb09f3244b0b9</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-07 01:59:16</sys_updated_on>
+    </sys_script_include>
+</record_update>

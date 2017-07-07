@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ds_int.DocuSignTemplate</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>DocuSignTemplate</name>
+        <script><![CDATA[var DocuSignTemplate = Class.create();
+DocuSignTemplate.prototype = Object.extendsObject(x_snc_ds_int.DocuSign, {
+
+	sync : function() {
+		var r = new sn_ws.RESTMessageV2('x_snc_ds_int.DocuSign Templates', 'List');
+		r.setStringParameter("accountId", this.auth.loginAccounts[0].accountId);
+		r.setRequestHeader("X-DocuSign-Authentication", this.authHeader);
+		var response = r.execute();
+		var responseBody = response.getBody();
+		var httpStatus = response.getStatusCode();
+
+		responseBody = JSON.parse(responseBody);
+
+		for (var i = 0; i < responseBody.envelopeTemplates.length; i++) {
+			var currentTemplate = responseBody.envelopeTemplates[i];
+
+			var t = new GlideRecord('x_snc_ds_int_templates');
+			if (!t.get('template_id', currentTemplate.templateId)) {
+				t.initialize();
+				t.template_id = currentTemplate.templateId;
+				t.name = currentTemplate.name;
+				t.description = currentTemplate.description;
+				t.uri = currentTemplate.uri;
+				t.insert();
+			} else {
+				t.name = currentTemplate.name;
+				t.description = currentTemplate.description;	
+				t.update();
+			}
+		}
+	},
+
+
+	type: 'DocuSignTemplate'
+});
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-03 20:42:18</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>c6341bec13b77a00c6bbb09f3244b056</sys_id>
+        <sys_mod_count>28</sys_mod_count>
+        <sys_name>DocuSignTemplate</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_script_include_c6341bec13b77a00c6bbb09f3244b056</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-04 20:12:03</sys_updated_on>
+    </sys_script_include>
+</record_update>

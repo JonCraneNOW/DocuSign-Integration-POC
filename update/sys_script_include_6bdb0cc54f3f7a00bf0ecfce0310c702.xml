@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_snc_ds_int.DocuSignRecipient</api_name>
+        <client_callable>false</client_callable>
+        <description>Recipient object used for setting the base recipients, adding and removing...</description>
+        <name>DocuSignRecipient</name>
+        <script><![CDATA[var DocuSignRecipient = Class.create();
+DocuSignRecipient.prototype = {
+	initialize: function() {
+		this.recipients = {};
+		this.templateRecipients = [];
+
+		this.RECIPIENT_TYPES = [
+			'agent',
+			'carbonCopy',
+			'certifiedDelivery',
+			'editor',
+			'inPersonSigner',
+			'intermediary',
+			'signer'
+		];
+
+		this.RECIPIENT_TYPES_PLURALS = {
+			signer : 'signers'
+		};
+
+	},
+	
+	setRecipientsFromObject : function(r) {
+		//Nothing to see here yet...
+	},
+
+	setTemplateRolesFromObject : function(r) {		
+		var templateRoles = [];
+		
+		for (var i = 0; i < r.length; i++) {
+			var currentRecips = r[i];
+			
+			var roleName = Object.keys(currentRecips);	
+			var tempRecips = currentRecips[roleName];
+
+			for (var n = 0; n < tempRecips.length; n++) {
+				var u = new x_snc_ds_int.DocuSignUtils().getGR('sys_user', tempRecips[n]);
+
+				if (u) {
+					templateRoles.push({
+						"name" : u.name + '',
+						"email" : u.email + '',
+						"roleName" : roleName + ''
+					});
+				}
+			}
+		}
+		
+		return templateRoles;
+	},
+	
+	setTemplateRolesFromRule : function(task, rule) {
+		if (!task && !rule)
+			return;
+		
+		if (rule.signer_field && task[rule.signer_field]) {
+			
+			return  [{
+				"email" : task[rule.signer_field].email + '',
+				"name" : task[rule.signer_field].name + '',
+				"roleName" : "Signer" + ''
+			}];
+		}
+		
+		return false;
+	},
+
+	type: 'DocuSignRecipient'
+	};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-04 19:25:48</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>6bdb0cc54f3f7a00bf0ecfce0310c702</sys_id>
+        <sys_mod_count>46</sys_mod_count>
+        <sys_name>DocuSignRecipient</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_script_include_6bdb0cc54f3f7a00bf0ecfce0310c702</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-05 22:56:59</sys_updated_on>
+    </sys_script_include>
+</record_update>

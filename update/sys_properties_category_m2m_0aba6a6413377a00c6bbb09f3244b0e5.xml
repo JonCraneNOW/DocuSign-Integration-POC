@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties_category_m2m">
+    <sys_properties_category_m2m action="INSERT_OR_UPDATE">
+        <category display_value="DocuSign Integration">ef786ea013377a00c6bbb09f3244b004</category>
+        <order>200</order>
+        <property display_value="x_snc_ds_int.api.password" name="x_snc_ds_int.api.password">484a26e013377a00c6bbb09f3244b0c2</property>
+        <sys_class_name>sys_properties_category_m2m</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-03 17:41:00</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>0aba6a6413377a00c6bbb09f3244b0e5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_snc_ds_int.api.password.DocuSign Integration</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_properties_category_m2m_0aba6a6413377a00c6bbb09f3244b0e5</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-03 17:41:00</sys_updated_on>
+    </sys_properties_category_m2m>
+</record_update>

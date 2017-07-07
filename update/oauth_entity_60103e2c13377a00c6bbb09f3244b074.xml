@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="oauth_entity">
+    <oauth_entity action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <access_token_lifespan>1800</access_token_lifespan>
+        <active>true</active>
+        <auth_code_lifespan>0</auth_code_lifespan>
+        <auth_url>https://account-d.docusign.com/oauth/auth</auth_url>
+        <certificate_url/>
+        <client_id>SERV-a5c31318-dd63-48b7-bc8e-0f8ee5bc42ae</client_id>
+        <client_secret>hrog0sAgz8WI10HNyNk+ke1d40S/OhXdm/Asw2CA9MfFfENuBmg23Q==</client_secret>
+        <client_uuid>6810bae813377a00c6bbb09f3244b055</client_uuid>
+        <comments/>
+        <default_grant_type>password</default_grant_type>
+        <id_token_lifespan>0</id_token_lifespan>
+        <logo_url/>
+        <message_signature_lifespan>0</message_signature_lifespan>
+        <name>DocuSign</name>
+        <oauth_api_script/>
+        <redirect_url>https://jcranesc1.service-now.com/oauth_redirect.do</redirect_url>
+        <refresh_token_lifespan>8640000</refresh_token_lifespan>
+        <revoke_token_url/>
+        <salt>0</salt>
+        <sys_class_name>oauth_entity</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-03 18:12:25</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>60103e2c13377a00c6bbb09f3244b074</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>DocuSign</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>oauth_entity_60103e2c13377a00c6bbb09f3244b074</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-03 18:39:07</sys_updated_on>
+        <token_url>https://account-d.docusign.com/oauth/token</token_url>
+        <type>oauth_provider</type>
+        <user/>
+    </oauth_entity>
+</record_update>

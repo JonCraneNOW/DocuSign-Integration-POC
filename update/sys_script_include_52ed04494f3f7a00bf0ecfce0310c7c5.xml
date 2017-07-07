@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ds_int.DocuSignUtils</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>DocuSignUtils</name>
+        <script><![CDATA[var DocuSignUtils = Class.create();
+DocuSignUtils.prototype = {
+	initialize: function() {
+	},
+
+	getGR : function(table, id) {
+		var gr = new GlideRecord(table);
+		if (gr.isValid() && gr.get(id)){
+			return gr;
+		}
+		return false;		
+	},
+	
+	getTemplateGRByTemplateId : function(templateId, returnField) {
+		var t = new GlideRecord('x_snc_ds_int_envelopes');
+		t.addQuery('template_id', templateId);
+		t.query();
+		
+		if (t.next()){
+			if (returnField)
+				return t[returnField];
+			else
+				return t;
+		}
+		
+		return false;
+	},
+
+	log : function(record, response, template) {
+		var envelope = new GlideRecord('x_snc_ds_int_envelopes');
+		envelope.initialize();
+		envelope.status = response.status;
+		if (record) { envelope.record = record.sys_id; }
+		envelope.sent = new GlideDateTime().getDisplayValue();
+		envelope.envelope_id = response.envelopeId;
+		envelope.uri = response.uri;
+		if (template)
+			envelope.template = template.sys_id;
+
+		envelope.insert();
+	},
+
+	type: 'DocuSignUtils'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-04 19:35:12</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>52ed04494f3f7a00bf0ecfce0310c7c5</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>DocuSignUtils</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_script_include_52ed04494f3f7a00bf0ecfce0310c7c5</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-07 01:59:57</sys_updated_on>
+    </sys_script_include>
+</record_update>

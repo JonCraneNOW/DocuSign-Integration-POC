@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Envelopes" max_length="40" name="x_snc_ds_int_envelopes" type="collection">
+        <element attributes="edge_encryption_enabled=true" label="Document name" max_length="100" name="document_name" type="string"/>
+        <element label="Envelope ID" max_length="100" name="envelope_id" type="string"/>
+        <element label="Task" max_length="32" name="record" reference="task" type="reference"/>
+        <element label="Sent" max_length="40" name="sent" type="glide_date_time"/>
+        <element label="Signed" max_length="40" name="signed" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true" label="Signer name" max_length="40" name="signer_name" type="string"/>
+        <element label="Status" max_length="40" name="status" type="string"/>
+        <element label="Template" max_length="32" name="template" reference="x_snc_ds_int_templates" type="reference"/>
+        <element attributes="edge_encryption_enabled=true" label="Template name" max_length="100" name="template_name" type="string"/>
+        <element label="URI" max_length="1024" name="uri" type="url"/>
+        <index name="index">
+            <element name="template"/>
+        </index>
+        <index name="index2">
+            <element name="record"/>
+        </index>
+    </element>
+</database>
