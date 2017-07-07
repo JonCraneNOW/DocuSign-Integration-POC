@@ -2,7 +2,9 @@
 <record_update table="sys_ui_page">
     <sys_ui_page action="INSERT_OR_UPDATE">
         <category>general</category>
-        <client_script><![CDATA[var formData = {};
+        <client_script><![CDATA[gel('x_snc_ds_int_send_for_docusign_signature_title').innerHTML = '<img src="docusign_logo_small.png" width="100" /> ' + gel('x_snc_ds_int_send_for_docusign_signature_title').innerHTML;
+
+var formData = {};
 formData.otherUserDisplayValues = [];
 formData.otherUserSysIds = [];
 gel('errorMessage').style.display = 'none';
@@ -209,7 +211,7 @@ function cancelSend() {
         <sys_created_on>2017-07-05 23:00:57</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>fbb606594fbfba00bf0ecfce0310c784</sys_id>
-        <sys_mod_count>137</sys_mod_count>
+        <sys_mod_count>142</sys_mod_count>
         <sys_name>send_for_docusign_signature</sys_name>
         <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
         <sys_policy/>
@@ -217,6 +219,6 @@ function cancelSend() {
         <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_ui_page_fbb606594fbfba00bf0ecfce0310c784</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-07-07 19:10:55</sys_updated_on>
+        <sys_updated_on>2017-07-07 19:57:59</sys_updated_on>
     </sys_ui_page>
 </record_update>
