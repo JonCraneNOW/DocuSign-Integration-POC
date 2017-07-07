@@ -5,13 +5,14 @@
         <client_script><![CDATA[var formData = {};
 formData.otherUserDisplayValues = [];
 formData.otherUserSysIds = [];
+gel('errorMessage').style.display = 'none';
 
 function addUser() {
 	var otherUserValue = gel('send_to_other').value;
-	
+
 	if (otherUserValue == '' || formData.otherUserSysIds.indexOf(otherUserValue) >= 0)
 		return;
-		
+
 	var $userRefDisplay = $j('#display_hidden\\.send_to_other');
 	var $userRefDisplayVisible = $j('#sys_display\\.send_to_other');
 	var $userRef = $j('#send_to_other');
@@ -23,7 +24,7 @@ function addUser() {
 	$userRefDisplay.val('');
 	$userRefDisplayVisible.val('');
 	$userRef.val('');
-	
+
 	gel('other_user_list').innerHTML=formData.otherUserDisplayValues;
 }
 
@@ -34,7 +35,31 @@ function sendDocusignEnvelope(task) {
 	formData.subject = gel('emailSubject').value;
 	formData.task = task;
 	formData.table = g_form.getTableName();
-	
+
+	console.log(formData);
+
+	/* Validation */
+	if ((formData.sendToSigner == 'false' || formData.sendToSigner == '') && 
+		(formData.sendToOpenedFor == 'false' || formData.sendToOpenedFor == '') &&
+		formData.otherUserSysIds.length == 0) {
+		
+		console.log("Failed user validation")
+
+		//No users specified
+		gel('errorMessage').style.display = 'block';
+		gel('errorMessage').innerHTML = 'No users specified. Select the Signer, Opened For, or add recipients.';
+		return;
+	}
+
+	if (formData.template == '') {
+		console.log("Failed template validation")
+		gel('errorMessage').style.display = 'block';
+		gel('errorMessage').innerHTML = 'No Template specified above. Choose an available template and re-send.';
+		return;
+	}
+
+	/* End validation */
+
 	var ga = new GlideAjax('DocuSignAJAX');
 	ga.addParam('sysparm_name','sendFromTask');
 	ga.addParam('sysparm_formData', JSON.stringify(formData));
@@ -44,7 +69,7 @@ function sendDocusignEnvelope(task) {
 		var answer = response.responseXML.documentElement.getAttribute("answer");
 		console.log(answer)
 	}
-	
+
 	console.log(formData);
 }
 
@@ -54,7 +79,7 @@ function clearUsers() {
 }
 
 function cancelSend() {
-	 GlideDialogWindow.get().destroy();
+	GlideDialogWindow.get().destroy();
 }]]></client_script>
         <description>${sysparm_task_id}</description>
         <direct>false</direct>
@@ -69,10 +94,13 @@ function cancelSend() {
 		.fixed-button-width {
 		width: 64px;
 		}
-
 	</style>
 
 	<g:ui_form>
+		<div class="alert alert-danger alert-dismissable" id="errorMessage">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
+			<strong>Error: </strong>The following fields are empty and are required: field, field, field
+		</div>
 		<!-- STEP 1 -->
 		<div class="row header-row">
 			<div class="col-md-10">
@@ -166,7 +194,7 @@ function cancelSend() {
 		</div>	
 		<hr />
 		<br />
-
+		
 		<div style="text-align:right" class="pull-right">
 			<span><button class="fixed-button-width" onclick="sendDocusignEnvelope('${sysparm_task_id}')" type="button">Send</button></span>
 		</div>
@@ -181,7 +209,7 @@ function cancelSend() {
         <sys_created_on>2017-07-05 23:00:57</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>fbb606594fbfba00bf0ecfce0310c784</sys_id>
-        <sys_mod_count>118</sys_mod_count>
+        <sys_mod_count>137</sys_mod_count>
         <sys_name>send_for_docusign_signature</sys_name>
         <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
         <sys_policy/>
@@ -189,6 +217,6 @@ function cancelSend() {
         <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_ui_page_fbb606594fbfba00bf0ecfce0310c784</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-07-06 21:15:30</sys_updated_on>
+        <sys_updated_on>2017-07-07 19:10:55</sys_updated_on>
     </sys_ui_page>
 </record_update>

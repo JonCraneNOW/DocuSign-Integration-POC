@@ -46,7 +46,6 @@
 			var DS = new x_snc_ds_int.DocuSignEnvelope(gr, tr).create();
 		}
 	}
-	
 
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -56,7 +55,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>436465894f33ba00bf0ecfce0310c7be</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>DocuSign Trigger rules</sys_name>
         <sys_overrides/>
         <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
@@ -65,7 +64,7 @@
         <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_script_436465894f33ba00bf0ecfce0310c7be</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-07-05 20:54:41</sys_updated_on>
+        <sys_updated_on>2017-07-07 06:58:09</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

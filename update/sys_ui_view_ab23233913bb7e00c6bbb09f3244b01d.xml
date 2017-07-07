@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_view">
+    <sys_ui_view action="INSERT_OR_UPDATE">
+        <group/>
+        <hidden>false</hidden>
+        <name>RPT2b23eff513bb7e00c6bbb09f3244b046</name>
+        <roles/>
+        <sys_class_name>sys_ui_view</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-07 19:00:05</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>ab23233913bb7e00c6bbb09f3244b01d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package/>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name/>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-07 19:00:05</sys_updated_on>
+        <title>Rpt2b23eff513bb7e00c6bbb09f3244b046</title>
+        <user/>
+    </sys_ui_view>
+</record_update>
