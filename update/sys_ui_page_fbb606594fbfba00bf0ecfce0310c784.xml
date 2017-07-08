@@ -58,6 +58,8 @@ function sendDocusignEnvelope(task) {
 	}
 
 	/* End validation */
+	
+	console.log(formData)
 
 	var ga = new GlideAjax('DocuSignAJAX');
 	ga.addParam('sysparm_name','sendFromTask');
@@ -80,7 +82,7 @@ function clearUsers() {
 function cancelSend() {
 	GlideDialogWindow.get().destroy();
 }]]></client_script>
-        <description>${sysparm_task_id}</description>
+        <description/>
         <direct>false</direct>
         <endpoint>x_snc_ds_int_send_for_docusign_signature.do</endpoint>
         <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
@@ -122,6 +124,7 @@ function cancelSend() {
 				<g:ui_reference name="docusign_template" id="docusign_template" table="x_snc_ds_int_templates" query="active=true" completer="AJAXTableCompleter" columns="name"/>
 			</div>
 		</div>
+		<!--
 		<p />
 		<h5>OR</h5>
 		<p />
@@ -133,6 +136,7 @@ function cancelSend() {
 				<g:ui_checkbox name="use_attachment" value="${sysparm_timecard_active}"/>
 			</div>
 		</div>
+-->
 
 		<hr />
 
@@ -212,7 +216,7 @@ function cancelSend() {
         <sys_created_on>2017-07-05 23:00:57</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>fbb606594fbfba00bf0ecfce0310c784</sys_id>
-        <sys_mod_count>143</sys_mod_count>
+        <sys_mod_count>145</sys_mod_count>
         <sys_name>send_for_docusign_signature</sys_name>
         <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
         <sys_policy/>
@@ -220,6 +224,6 @@ function cancelSend() {
         <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_ui_page_fbb606594fbfba00bf0ecfce0310c784</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-07-07 21:55:43</sys_updated_on>
+        <sys_updated_on>2017-07-08 22:57:34</sys_updated_on>
     </sys_ui_page>
 </record_update>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Connect configurations" max_length="40" name="x_snc_ds_int_connect_configurations" type="collection">
+        <element label="Active" max_length="40" name="active" type="boolean"/>
+        <element attributes="edge_encryption_enabled=true" default="custom" label="Configuration type" max_length="40" name="configuration_type" read_only="true" type="string"/>
+        <element label="Connect ID" max_length="40" name="connect_id" read_only="true" type="string"/>
+        <element label="Enable log" max_length="40" name="enable_log" type="boolean"/>
+        <element label="Certification of completion" max_length="40" name="include_cert_of_comp" type="boolean"/>
+        <element label="Envelope fields" max_length="40" name="include_envelope_fields" type="boolean"/>
+        <element label="Envelope PDFs" max_length="40" name="include_envelope_pdfs" type="boolean"/>
+        <element label="Envelope voided reason" max_length="40" name="include_env_void_reason" type="boolean"/>
+        <element label="Sender account info" max_length="40" name="include_sender_acct_info" type="boolean"/>
+        <element label="Time zone information" max_length="40" name="include_tz_info" type="boolean"/>
+        <element label="Name" mandatory="true" max_length="40" name="name" type="string"/>
+        <element label="Require acknowledgement" max_length="40" name="require_acknowledgement" type="boolean"/>
+        <element label="REST Endpoint" mandatory="true" max_length="32" name="rest_endpoint" reference="sys_ws_operation" reference_qual="sys_scopeLIKEDocuSign Integration^EQ" reference_qual_condition="sys_scopeLIKEDocuSign Integration^EQ" type="reference"/>
+        <element label="Envelope declined" max_length="40" name="trigger_env_declined" type="boolean"/>
+        <element label="Envelope delivered" max_length="40" name="trigger_env_delivered" type="boolean"/>
+        <element label="Envelope sent" max_length="40" name="trigger_env_sent" type="boolean"/>
+        <element label="Envelope signed" max_length="40" name="trigger_env_signed" type="boolean"/>
+        <element label="Envelope voided" max_length="40" name="trigger_env_voided" type="boolean"/>
+        <element label="Recipient authentication failure" max_length="40" name="trigger_recip_auth_fail" type="boolean"/>
+        <element label="Recipient declined" max_length="40" name="trigger_recip_declined" type="boolean"/>
+        <element label="Recipient delivery failed" max_length="40" name="trigger_recip_del_failed" type="boolean"/>
+        <element label="Recipient delivered" max_length="40" name="trigger_recip_del_success" type="boolean"/>
+        <element label="Recipient sent" max_length="40" name="trigger_recip_sent" type="boolean"/>
+        <element label="Recipient signed" max_length="40" name="trigger_recip_signed" type="boolean"/>
+        <element label="Require mutual TLS" max_length="40" name="ws_require_mutual_tls" type="boolean"/>
+        <element label="Sign with X509 Certificate" max_length="40" name="ws_sign_x509_cert" type="boolean"/>
+        <element label="Use SOAP interface" max_length="40" name="ws_use_soap" type="boolean"/>
+        <index name="index">
+            <element name="rest_endpoint"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="ws_use_soap" label="Use SOAP interface" language="en" table="x_snc_ds_int_connect_configurations">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>ws_use_soap</element>
+            <help/>
+            <hint/>
+            <label>Use SOAP interface</label>
+            <language>en</language>
+            <name>x_snc_ds_int_connect_configurations</name>
+            <plural>Use SOAP interfaces</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2017-07-08 18:18:27</sys_created_on>
+            <sys_customer_update>true</sys_customer_update>
+            <sys_id>af33ac5e4f33be00bf0ecfce0310c740</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Use SOAP interface</sys_name>
+            <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+            <sys_update_name>sys_documentation_x_snc_ds_int_connect_configurations_ws_use_soap_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2017-07-08 18:18:27</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

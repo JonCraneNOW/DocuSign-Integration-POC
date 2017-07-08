@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ds_int.DocuSignConnect</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>DocuSignConnect</name>
+        <script><![CDATA[var DocuSignConnect = Class.create();
+DocuSignConnect.prototype = Object.extendsObject(x_snc_ds_int.DocuSign, {
+
+	syncFromDocusign : function() {
+		var Utils = new x_snc_ds_int.DocuSignUtils();
+
+		var updated = 0;
+		var inserted = 0;
+		var msg = '';
+
+		var r = this.call('DocuSign Connect', 'List');
+
+		if (r.configurations.length > 0) {
+			for (var i = 0; i < r.configurations.length; i++) {
+				var connect = r.configurations[i];
+				
+				if (connect.urlToPublishTo.indexOf('service-now.com/api') < 0) {
+					gs.info("*** DocuSignConnect *** Skipping " + connect.urlToPublishTo + " because it is an invalid ServiceNow URL.");
+					continue;
+				}
+				
+				var c = new GlideRecord('x_snc_ds_int_connect_configurations');
+				if (!c.get('connect_id', connect.connectId)){
+					c.initialize();
+
+					c.connect_id = connect.connectId;
+					c.configuration_type = connect.configurationType;
+
+					var wsResource = Utils.getWSResourceSysIDFromURL(connect.urlToPublishTo);
+					if (wsResource)
+						c.rest_endpoint = wsResource;
+
+					c.name = connect.name;
+					c.active = Utils.boolToString(connect.allowEnvelopePublish);
+					c.enable_log = Utils.boolToString(connect.enableLog);
+					c.include_envelope_pdfs = Utils.boolToString(connect.includeDocuments);
+					c.include_cert_of_comp = Utils.boolToString(connect.includeCertificateOfCompletion);
+					c.require_acknowledgement = Utils.boolToString(connect.requiresAcknowledgement);
+					c.ws_sign_x509_cert = Utils.boolToString(connect.signMessageWithX509Certificate);
+					c.ws_use_soap = Utils.boolToString(connect.useSoapInterface);
+					c.include_tz_info = Utils.boolToString(connect.includeTimeZoneInformation);
+					c.include_env_void_reason = Utils.boolToString(connect.includeEnvelopeVoidReason);
+					c.include_sender_acct_info = Utils.boolToString(connect.includeSenderAccountasCustomField);
+					c.include_envelope_fields = Utils.boolToString(connect.includeDocumentFields);
+
+					var envelopeEvents = connect.envelopeEvents.split(',');
+					if (envelopeEvents && envelopeEvents != ""){
+						for (var n = 0; n < envelopeEvents.length; n++){
+							var ee = envelopeEvents[n];
+
+							if (ee == 'Completed')
+								c.trigger_env_signed = true;
+							if (ee == 'Sent')
+								c.trigger_env_sent = true;
+							if (ee == 'Delivered')
+								c.trigger_env_delivered = true;
+							if (ee == 'Declined')
+								c.trigger_env_declined = true;
+							if (ee == 'Voided')
+								c.trigger_env_voided = true;
+						}
+					}
+
+					var recipientEvents = connect.recipientEvents.split(',');
+					if (recipientEvents && recipientEvents != ""){
+						for (var n = 0; n < recipientEvents.length; n++){
+							var re = envelopeEvents[n];
+
+							if (re == 'Completed')
+								c.trigger_recip_signed = true;
+							if (re == 'Sent')
+								c.trigger_recip_sent = true;
+							if (re == 'Delivered')
+								c.trigger_recip_del_success = true;
+							if (re == 'Declined')
+								c.trigger_recip_declined = true;
+							if (re == 'AuthenticationFailed')
+								c.trigger_env_auth_fail = true;
+							if (re == 'AutoResponded')
+								c.trigger_env_del_failed = true;
+						}
+					}
+					
+					
+					inserted++;
+					c.insert();
+				} else {
+
+					c.configuration_type = connect.configurationType;
+
+					var wsResource = Utils.getWSResourceSysIDFromURL(connect.urlToPublishTo);
+					if (wsResource)
+						c.rest_endpoint = wsResource;
+
+					c.active = Utils.boolToString(connect.allowEnvelopePublish);
+					c.enable_log = Utils.boolToString(connect.enableLog);
+					c.include_envelope_pdfs = Utils.boolToString(connect.includeDocuments);
+					c.include_cert_of_comp = Utils.boolToString(connect.includeCertificateOfCompletion);
+					c.require_acknowledgement = Utils.boolToString(connect.requiresAcknowledgement);
+					c.ws_sign_x509_cert = Utils.boolToString(connect.signMessageWithX509Certificate);
+					c.ws_use_soap = Utils.boolToString(connect.useSoapInterface);
+					c.include_tz_info = Utils.boolToString(connect.includeTimeZoneInformation);
+					c.include_env_void_reason = Utils.boolToString(connect.includeEnvelopeVoidReason);
+					c.include_sender_acct_info = Utils.boolToString(connect.includeSenderAccountasCustomField);
+					c.include_envelope_fields = Utils.boolToString(connect.includeDocumentFields);
+
+					var envelopeEvents = connect.envelopeEvents.split(',');
+					if (envelopeEvents && envelopeEvents != ""){
+						for (var n = 0; n < envelopeEvents.length; n++){
+							var ee = envelopeEvents[n];
+
+							if (ee == 'Completed')
+								c.trigger_env_signed = true;
+							if (ee == 'Sent')
+								c.trigger_env_sent = true;
+							if (ee == 'Delivered')
+								c.trigger_env_delivered = true;
+							if (ee == 'Declined')
+								c.trigger_env_declined = true;
+							if (ee == 'Voided')
+								c.trigger_env_voided = true;
+						}
+					}
+
+					var recipientEvents = connect.recipientEvents.split(',');
+					if (recipientEvents && recipientEvents != ""){
+						for (var n = 0; n < recipientEvents.length; n++){
+							var re = envelopeEvents[n];
+
+							if (re == 'Completed')
+								c.trigger_recip_signed = true;
+							if (re == 'Sent')
+								c.trigger_recip_sent = true;
+							if (re == 'Delivered')
+								c.trigger_recip_del_success = true;
+							if (re == 'Declined')
+								c.trigger_recip_declined = true;
+							if (re == 'AuthenticationFailed')
+								c.trigger_env_auth_fail = true;
+							if (re == 'AutoResponded')
+								c.trigger_env_del_failed = true;
+						}
+					}
+					updated++;
+					c.update();
+				}
+			}
+		}
+
+
+		if (inserted > 0 || updated > 0)
+			msg = "Sync complete. Connect configurations created: " + inserted + ". Connect configurations updated: " + updated + ". ";
+		else
+			msg = 'No templates could be inserted or updated. Something went wrong. Please check your DocuSign API credentials.';
+
+		gs.info(msg);
+		return msg;
+	},
+
+	syncSingleRecordFromInstance : function(gr) {		
+		var r = {};
+		
+		var body = {
+			urlToPublishTo : this.instance + gr.rest_endpoint.operation_uri + '',
+			name : gr.name + '',
+			allowEnvelopePublish : gr.active.toString(),
+			enableLog : gr.enable_log.toString(),
+			includeDocuments : gr.include_envelope_pdfs.toString(),
+			includeCertificateOfCompletion : gr.include_cert_of_comp.toString(),
+			requiresAcknowledgement : gr.require_acknowledgement.toString(),
+			signMessageWithX509Certificate : gr.ws_sign_x509_cert.toString(),
+			useSoapInterface : gr.ws_use_soap.toString(),
+			includeTimeZoneInformation : gr.include_tz_info.toString(),
+			includeEnvelopeVoidReason : gr.include_env_void_reason.toString(),
+			includeSenderAccountasCustomField : gr.include_sender_acct_info.toString(),
+			includeDocumentFields : gr.include_envelope_fields.toString(),
+			envelopeEvents : this.getEnvelopeEventsAsArray(gr),
+			recipientEvents : this.getRecipientEventsAsArray(gr),
+			allUsers : 'true'
+		};
+		
+		if (gr.connect_id) {
+			//This has been synced already. Update in DocuSign.			
+			body.connectId = gr.connect_id + '';
+			body.configurationType = 'custom';
+			r = this.call('DocuSign Connect', 'Update', body);
+			
+		} else {
+			r = this.call('DocuSign Connect', 'Create', body);
+			
+			var taskGR = new x_snc_ds_int.DocuSignUtils().getGR('x_snc_ds_int_connect_configurations', gr.sys_id);
+			
+			taskGR.connect_id = r.connectId;
+			taskGR.update();
+			
+		}
+		
+		return JSON.stringify(r);
+
+	},
+	
+	getRecipientEventsAsArray : function(gr) {
+		var array = [];
+
+		if (gr.trigger_env_signed)
+			array.push('Completed');
+		if (gr.trigger_env_sent)
+			array.push('Sent');
+		if (gr.trigger_env_delivered)
+			array.push('Delivered');
+		if (gr.trigger_env_declined)
+			array.push('Declined');
+		if (gr.trigger_env_voided)
+			array.push('Voided');
+		
+		return array.toString();
+		
+	},
+
+	getEnvelopeEventsAsArray : function(gr) {
+		var array = [];
+
+		if (gr.trigger_recip_signed)
+			array.push('Completed');
+		if (gr.trigger_recip_sent)
+			array.push('Sent');
+		if (gr.trigger_recip_del_success)
+			array.push('Delivered');
+		if (gr.trigger_recip_declined)
+			array.push('Declined');
+		if (gr.trigger_env_auth_fail)
+			array.push('AuthenticationFailed');
+		if (gr.trigger_env_del_failed)
+			array.push('AutoResponded');
+		
+		return array.toString();
+	},
+
+	type: 'DocuSignConnect'
+});
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-08 18:30:07</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>aee560124f73be00bf0ecfce0310c737</sys_id>
+        <sys_mod_count>26</sys_mod_count>
+        <sys_name>DocuSignConnect</sys_name>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_script_include_aee560124f73be00bf0ecfce0310c737</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-08 21:39:10</sys_updated_on>
+    </sys_script_include>
+</record_update>
