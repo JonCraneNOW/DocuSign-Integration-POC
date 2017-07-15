@@ -11,7 +11,7 @@
         <element label="Envelope voided reason" max_length="40" name="include_env_void_reason" type="boolean"/>
         <element label="Sender account info" max_length="40" name="include_sender_acct_info" type="boolean"/>
         <element label="Time zone information" max_length="40" name="include_tz_info" type="boolean"/>
-        <element label="Name" mandatory="true" max_length="40" name="name" type="string"/>
+        <element display="true" label="Name" mandatory="true" max_length="40" name="name" type="string"/>
         <element label="Require acknowledgement" max_length="40" name="require_acknowledgement" type="boolean"/>
         <element label="REST Endpoint" mandatory="true" max_length="32" name="rest_endpoint" reference="sys_ws_operation" reference_qual="sys_scopeLIKEDocuSign Integration^EQ" reference_qual_condition="sys_scopeLIKEDocuSign Integration^EQ" type="reference"/>
         <element label="Envelope declined" max_length="40" name="trigger_env_declined" type="boolean"/>

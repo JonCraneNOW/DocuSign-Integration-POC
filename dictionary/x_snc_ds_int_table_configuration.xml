@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Table configuration" max_length="40" name="x_snc_ds_int_table_configuration" type="collection">
+        <element label="Description" max_length="200" name="description" type="string"/>
+        <element attributes="allow_references=true,reference_types=sys_user" dependent="table" dependent_on_field="table" label="Signer field" max_length="80" name="signer_field_1" type="string" use_dependent_field="true"/>
+        <element label="Signer field display value" max_length="40" name="signer_field_1_dv" type="string"/>
+        <element attributes="allow_references=true,reference_types=sys_user" dependent="table" dependent_on_field="table" label="Additional signer field" max_length="80" name="signer_field_2" type="string" use_dependent_field="true"/>
+        <element label="Additional signer field display value" max_length="40" name="signer_field_2_dv" type="string"/>
+        <element display="true" label="Table" mandatory="true" max_length="80" name="table" type="table_name"/>
+    </element>
+</database>

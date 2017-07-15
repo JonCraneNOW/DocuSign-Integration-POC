@@ -29,22 +29,33 @@ function addUser() {
 	$userRefDisplayVisible.val('');
 	$userRef.val('');
 
-	gel('other_user_list').innerHTML=formData.otherUserDisplayValues;
+	gel('other_user_list').innerHTML = formData.otherUserDisplayValues;
 }
 
 function sendDocusignEnvelope(task) {
+	//Clear any error messages
+	gel('errorMessage').style.display = 'none';
+	gel('successMessage').style.display = 'none';
+
+	//Sets the formData variable
 	formData.template = gel('docusign_template').value;
-	formData.sendToSigner = gel('send_to_signer').value;
-	formData.sendToOpenedFor = gel('send_to_opened_for').value;
+	formData.recipientsByField = (gel('fieldsString').value).split(",");
+	formData.recipientFieldArray = [];
+	
+	if (formData.recipientsByField[0] && gel(formData.recipientsByField[0]).value == 'true') {
+		formData.recipientFieldArray.push(formData.recipientsByField[0])
+	}
+	
+	if (formData.recipientsByField[1] && gel(formData.recipientsByField[1]).value == 'true') {
+		formData.recipientFieldArray.push(formData.recipientsByField[1]);
+	}
+	
 	formData.subject = gel('emailSubject').value;
 	formData.task = task;
 	formData.table = g_form.getTableName();
 
-	/* Validation */
-	if ((formData.sendToSigner == 'false' || formData.sendToSigner == '') && 
-		(formData.sendToOpenedFor == 'false' || formData.sendToOpenedFor == '') &&
-		formData.otherUserSysIds.length == 0) {
-		
+	//Validation
+	if (formData.otherUserSysIds.length == 0 && formData.recipientFieldArray.length == 0) {
 		//No users specified
 		gel('errorMessage').style.display = 'block';
 		gel('errorMessage').innerHTML = 'No users specified. Select the Signer, Opened For, or add recipients.';
@@ -57,10 +68,7 @@ function sendDocusignEnvelope(task) {
 		return;
 	}
 
-	/* End validation */
-	
-	console.log(formData)
-
+	//Submit!
 	var ga = new GlideAjax('DocuSignAJAX');
 	ga.addParam('sysparm_name','sendFromTask');
 	ga.addParam('sysparm_formData', JSON.stringify(formData));
@@ -77,6 +85,8 @@ function sendDocusignEnvelope(task) {
 function clearUsers() {
 	formData.otherUserDisplayValues = [];
 	formData.otherUserSysIds = [];
+	gel('other_user_list').innerHTML = '';
+	return;
 }
 
 function cancelSend() {
@@ -87,6 +97,7 @@ function cancelSend() {
         <endpoint>x_snc_ds_int_send_for_docusign_signature.do</endpoint>
         <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+	
 	<style>
 		h4 {
 		margin: 0px;
@@ -100,11 +111,9 @@ function cancelSend() {
 	<g:ui_form>
 		<div class="alert alert-success alert-dismissable" id="successMessage">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
-			<strong>Success: </strong>The following fields are empty and are required: field, field, field
 		</div>
 		<div class="alert alert-danger alert-dismissable" id="errorMessage">
 			<a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
-			<strong>Error: </strong>The following fields are empty and are required: field, field, field
 		</div>
 		<!-- STEP 1 -->
 		<div class="row header-row">
@@ -149,21 +158,67 @@ function cancelSend() {
 			</div>
 		</div>
 		<br />
-
+				
 		<div class="row">
-			<div class="col-md-4">
-				"Signer" from this HR Task:
-			</div>
-			<div class="col-md-2">
-				<g:ui_checkbox id="send_to_signer" name="send_to_signer" value="${sysparm_send_to_signer}"/>
-			</div>
-			<div class="col-md-4">
-				"Opened for" from HR Case:
-			</div>
-			<div class="col-md-2">
-				<g:ui_checkbox id="send_to_opened_for" name="send_to_opened_for" value="${sysparm_send_to_opened_for}"/>
-			</div>
-		</div>	
+			<g:evaluate>
+				var table = RP.getWindowProperties().sysparm_table_name;
+				var fields = {
+					signerField1 : {
+						name : '',
+						value : ''
+					},
+					signerField2 : {
+						name : '',
+						value : ''				
+					},
+					fieldArray : []
+				};
+				
+				var gr = new GlideRecord('x_snc_ds_int_table_configuration');
+				gr.addQuery('table', table);
+				gr.query();
+				
+				if (gr.next()) {
+					if (gr.signer_field_1) {
+						fields.signerField1.name = gr.signer_field_1_dv + '';
+						fields.signerField1.value = gr.signer_field_1 + '';
+						fields.fieldArray.push(gr.signer_field_1 + '');
+					}
+				
+					if (gr.signer_field_2) {
+						fields.signerField2.name = gr.signer_field_2_dv + '';
+						fields.signerField2.value = gr.signer_field_2 + '';
+						fields.fieldArray.push(gr.signer_field_2 + '');
+					}					
+				}
+				
+				var fieldsString = fields.fieldArray.toString();
+				
+			</g:evaluate>
+						
+			<j:if test="${fields.signerField1.name != ''}">
+				
+				<div class="col-md-4">
+					${fields.signerField1.name}:
+				</div>
+				<div class="col-md-2">
+					<g:ui_checkbox id="${fields.signerField1.value}" name="${fields.signerField1.value}" />
+				</div>	
+				
+			</j:if>
+
+			<j:if test="${fields.signerField2.name != ''}">
+				<div class="col-md-4">
+					${fields.signerField2.name}:
+				</div>
+				<div class="col-md-2">
+					<g:ui_checkbox id="${fields.signerField2.value}" name="${fields.signerField2.value}" />
+				</div>	
+			</j:if>
+		</div>
+		
+		<input type="hidden" name="fieldsString" value="${fieldsString}" id="fieldsString" />
+		
 		<p />
 		<div class="row">
 			<div class="col-md-2">
@@ -174,7 +229,7 @@ function cancelSend() {
 			</div>
 			<div class="col-md-4">
 				<span><button class="btn-sm fixed-button-width" onclick="addUser()" type="button">Add</button></span>$[SP]
-				<span><button class="btn-sm fixed-button-width" onclick="clearUsers()">Clear all</button></span>
+				<span><button class="btn-sm fixed-button-width" onclick="clearUsers()" type="button">Clear all</button></span>
 			</div>
 		</div>
 		Other users: $[SP]<span id="other_user_list"></span>
@@ -216,7 +271,7 @@ function cancelSend() {
         <sys_created_on>2017-07-05 23:00:57</sys_created_on>
         <sys_customer_update>true</sys_customer_update>
         <sys_id>fbb606594fbfba00bf0ecfce0310c784</sys_id>
-        <sys_mod_count>145</sys_mod_count>
+        <sys_mod_count>226</sys_mod_count>
         <sys_name>send_for_docusign_signature</sys_name>
         <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
         <sys_policy/>
@@ -224,6 +279,6 @@ function cancelSend() {
         <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_ui_page_fbb606594fbfba00bf0ecfce0310c784</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-07-08 22:57:34</sys_updated_on>
+        <sys_updated_on>2017-07-15 04:56:53</sys_updated_on>
     </sys_ui_page>
 </record_update>
