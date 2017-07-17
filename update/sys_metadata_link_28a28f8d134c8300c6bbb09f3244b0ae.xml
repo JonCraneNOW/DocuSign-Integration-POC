@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_metadata_link">
+    <sys_metadata_link action="INSERT_OR_UPDATE">
+        <directory>update</directory>
+        <documentkey>27a9ab5d133be240c6bbb09f3244b037</documentkey>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_number_counter">
+    <sys_number_counter action="INSERT_OR_UPDATE">
+        <number>10982</number>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-12-19 10:00:22</sys_created_on>
+        <sys_id>27a9ab5d133be240c6bbb09f3244b037</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-12-19 10:00:22</sys_updated_on>
+        <table display_value="" name="kb_knowledge">kb_knowledge</table>
+    </sys_number_counter>
+</record_update>
+]]></payload>
+        <sys_class_name>sys_metadata_link</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-07-17 18:58:09</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>28a28f8d134c8300c6bbb09f3244b0ae</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>10,982</sys_name>
+        <sys_package display_value="kb_knowledge" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="kb_knowledge">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_update_name>sys_metadata_link_28a28f8d134c8300c6bbb09f3244b0ae</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-07-17 18:58:09</sys_updated_on>
+        <tablename>sys_number_counter</tablename>
+    </sys_metadata_link>
+</record_update>
