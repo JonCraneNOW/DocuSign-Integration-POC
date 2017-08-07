@@ -17,10 +17,10 @@
         <sys_id>bf6e784d4fbf7a00bf0ecfce0310c777</sys_id>
         <sys_mod_count>0</sys_mod_count>
         <sys_name>x_snc_ds_int.envelopes_user</sys_name>
-        <sys_package display_value="kb_knowledge" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
-        <sys_scope display_value="kb_knowledge">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_user_role_bf6e784d4fbf7a00bf0ecfce0310c777</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2017-07-04 23:04:51</sys_updated_on>

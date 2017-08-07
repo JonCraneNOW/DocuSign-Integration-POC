@@ -16,10 +16,10 @@
             <sys_id>2df1a5c54f33ba00bf0ecfce0310c7dc</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>Table</sys_name>
-            <sys_package display_value="kb_knowledge" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+            <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
             <sys_policy/>
             <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
-            <sys_scope display_value="kb_knowledge">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+            <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
             <sys_update_name>sys_documentation_x_snc_ds_int_trigger_rules_table_en</sys_update_name>
             <sys_updated_by>admin</sys_updated_by>
             <sys_updated_on>2017-07-05 01:40:04</sys_updated_on>

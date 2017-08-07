@@ -50,10 +50,10 @@
         <sys_mod_count>15</sys_mod_count>
         <sys_name>Send for signature</sys_name>
         <sys_overrides/>
-        <sys_package display_value="kb_knowledge" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
+        <sys_package display_value="DocuSign Integration" source="x_snc_ds_int">9a96e6ac13f37a00c6bbb09f3244b060</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
-        <sys_scope display_value="kb_knowledge">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
+        <sys_scope display_value="DocuSign Integration">9a96e6ac13f37a00c6bbb09f3244b060</sys_scope>
         <sys_update_name>sys_ui_action_9acebddd4f7fba00bf0ecfce0310c7b0</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
         <sys_updated_on>2017-07-15 05:28:37</sys_updated_on>
